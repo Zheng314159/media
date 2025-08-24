@@ -1,0 +1,9 @@
+# 所有文本文件统一为 LF
+* text=auto eol=lf
+
+# Windows 批处理脚本保留 CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Shell 脚本强制 LF
+*.sh text eol=lf

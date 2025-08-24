@@ -1,0 +1,7 @@
+.venv
+external_libs
+libs
+models
+datasets
+ttsVideo/outputs
+ttsVideo/feoutput

@@ -1,0 +1,9 @@
+build:
+  python_version: "3.11.9"
+  python_packages:
+    - TTS==0.22.0
+    - torch
+    - torchaudio
+    - ffmpeg-python
+    - soundfile
+predict: "predictor.py:Predictor"
