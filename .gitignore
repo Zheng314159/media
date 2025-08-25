@@ -5,3 +5,4 @@ models
 datasets
 ttsVideo/outputs
 ttsVideo/feoutput
+ttsVideo/raw

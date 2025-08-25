@@ -1,0 +1,47 @@
+{
+  "Basic Editing 基础剪辑": {
+    "Blade Tool (B)": "刀片工具（B）",
+    "Selection Mode (A)": "选择工具（A）",
+    "Trim Edit Mode (T)": "修剪编辑模式（T）",
+    "Cut (Ctrl+X / Cmd+X)": "剪切（Ctrl+X / Cmd+X）",
+    "Copy (Ctrl+C / Cmd+C)": "复制（Ctrl+C / Cmd+C）",
+    "Paste (Ctrl+V / Cmd+V)": "粘贴（Ctrl+V / Cmd+V）",
+    "Undo (Ctrl+Z / Cmd+Z)": "撤销（Ctrl+Z / Cmd+Z）",
+    "Redo (Ctrl+Shift+Z / Cmd+Shift+Z)": "重做（Ctrl+Shift+Z / Cmd+Shift+Z）"
+  },
+  "Timeline Editing 时间线编辑": {
+    "Split Clip (Ctrl+\\ / Cmd+\\)": "切割片段（Ctrl+\\ / Cmd+\\）",
+    "Ripple Delete (Shift+Delete)": "波纹删除（Shift+Delete）",
+    "Insert (F9)": "插入（F9）",
+    "Overwrite (F10)": "覆盖（F10）",
+    "Replace (F11)": "替换（F11）",
+    "Fit to Fill (Shift+F11)": "填充（Shift+F11）",
+    "Append to End (Shift+F12)": "追加到结尾（Shift+F12）"
+  },
+  "Navigation 导航": {
+    "Play / Stop (Space)": "播放 / 停止（空格）",
+    "Play Around (Shift+Space)": "附近播放（Shift+空格）",
+    "Go to Start (Home)": "跳到开头（Home）",
+    "Go to End (End)": "跳到结尾（End）",
+    "Step Forward (→)": "前进一步（→）",
+    "Step Backward (←)": "后退一步（←）",
+    "Next Edit (Down Arrow)": "下一个编辑点（↓）",
+    "Previous Edit (Up Arrow)": "上一个编辑点（↑）"
+  },
+  "Markers & Flags 标记与旗标": {
+    "Add Marker (M)": "添加标记（M）",
+    "Delete Marker (Alt+M)": "删除标记（Alt+M）",
+    "Add Flag (Alt+Shift+F)": "添加旗标（Alt+Shift+F）"
+  },
+  "Audio 音频": {
+    "Mute (Shift+M)": "静音（Shift+M）",
+    "Solo (Shift+S)": "独奏（Shift+S）",
+    "Enable / Disable Clip (D)": "启用 / 禁用片段（D）"
+  },
+  "Zoom & View 视图与缩放": {
+    "Zoom In Timeline (+)": "时间线放大（+）",
+    "Zoom Out Timeline (-)": "时间线缩小（-）",
+    "Zoom to Fit (Shift+Z)": "缩放以适应（Shift+Z）",
+    "Toggle Full Screen Viewer (Ctrl+F / Cmd+F)": "切换全屏预览（Ctrl+F / Cmd+F）"
+  }
+}
