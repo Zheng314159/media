@@ -176,8 +176,8 @@ def generate_ass(cn_results, ass_path: str):
             start = format_timestamp_ass(start_sec)
             end = format_timestamp_ass(end_sec)
             text_en = translate(text_cn)
-            f.write(f"Dialogue: 0,{start},{end},CN,,0,0,60,,{{\\c&H00FF00&}}{text_cn}\n")
-            f.write(f"Dialogue: 0,{start},{end},EN,,0,0,20,,{{\\c&HFF0000&}}{text_en}\n")
+            f.write(f"Dialogue: 0,{start},{end},CN,,0,0,120,,{{\\c&H00FF00&}}{text_cn}\n")
+            f.write(f"Dialogue: 0,{start},{end},EN,,0,0,80,,{{\\c&HFF0000&}}{text_en}\n")
     print(f"✅ 已生成双语字幕: {ass_path}")
 
 
@@ -312,7 +312,7 @@ def main():
                     for start_sec, end_sec, text_cn in cn_results:
                         start = format_timestamp_ass(start_sec)
                         end = format_timestamp_ass(end_sec)
-                        f.write(f"Dialogue: 0,{start},{end},CN,,0,0,40,,{{\\c&H00FF00&}}{text_cn}\n")
+                        f.write(f"Dialogue: 0,{start},{end},CN,,0,0,120,,{{\\c&H00FF00&}}{text_cn}\n")
                 burn_subtitles(args.video, ass_path, out_file)
             else:
                 print("⚠️ 未找到 cn.srt，无法烧录中文字幕！")
@@ -347,7 +347,7 @@ def main():
                     for start_sec, end_sec, text_en in en_results:
                         start = format_timestamp_ass(start_sec)
                         end = format_timestamp_ass(end_sec)
-                        f.write(f"Dialogue: 0,{start},{end},EN,,0,0,20,,{{\\c&HFF0000&}}{text_en}\n")
+                        f.write(f"Dialogue: 0,{start},{end},EN,,0,0,80,,{{\\c&HFF0000&}}{text_en}\n")
                 burn_subtitles(args.video, ass_path, out_file)
             else:
                 print("⚠️ 未找到 en.srt，无法烧录英文字幕！")
