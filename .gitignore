@@ -6,3 +6,5 @@ datasets
 ttsVideo/outputs
 ttsVideo/feoutput
 ttsVideo/raw
+makeSubtitle/outputs
+makeSubtitle/raws

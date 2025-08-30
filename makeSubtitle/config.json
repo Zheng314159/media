@@ -3,5 +3,7 @@
   "model_dir": "F:\\media\\models\\faster-whisper-small",
   "simplified": true,
   "fontsize": 14,
-  "fontname": "SimHei"
+  "fontname": "SimHei",
+  "fontsize_cn": 30,
+  "fontsize_en": 18
 }
