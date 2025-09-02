@@ -1,0 +1,9 @@
+{
+  "ffmpeg_path": "F:\\media\\external_libs\\ffmpeg\\bin\\ffmpeg.exe",
+  "model_dir": "F:\\media\\models\\faster-whisper-small",
+  "simplified": true,
+  "fontsize": 14,
+  "fontname": "SimHei",
+  "fontsize_cn": 30,
+  "fontsize_en": 18
+}
