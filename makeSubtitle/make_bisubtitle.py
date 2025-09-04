@@ -104,22 +104,108 @@ def extract_audio(video_path: str, audio_path: str):
 
 
 def generate_cn_srt(audio_path: str, srt_path: str):
-    """生成中文字幕"""
+    """生成中文字幕（自动切分，避免超长字幕）。对可能为 None 的时间戳做了安全处理。"""
     model = WhisperModel(CONFIG["model_dir"], device="cpu")
     cc = OpenCC("t2s") if CONFIG.get("simplified", False) else None
 
-    segments, info = model.transcribe(audio_path, beam_size=5, task="transcribe", language="zh")
+    segments, info = model.transcribe(
+        audio_path,
+        beam_size=5,
+        task="transcribe",
+        language="zh",
+        word_timestamps=True,
+    )
+
+    MAX_CHARS = 15    # 每条字幕最多 15 个汉字（可调）
+    MAX_DURATION = 5.0  # 每条字幕最长显示 5 秒（可调）
+
+    def _to_float(x, fallback=0.0) -> float:
+        # 明确把可能为 None 的值转换为 float（避免类型错误）
+        return float(x) if x is not None else float(fallback)
+
+    def split_text_by_punct_and_len(text: str, max_len: int):
+        # 先按常见中文标点切分，若片段仍过长则硬切
+        import re
+        parts = re.split(r'[，。！？；；…\n]', text)
+        out = []
+        for p in parts:
+            p = p.strip()
+            if not p:
+                continue
+            if len(p) <= max_len:
+                out.append(p)
+            else:
+                for i in range(0, len(p), max_len):
+                    out.append(p[i:i+max_len])
+        return out
 
     results = []
+    idx = 1
+
     with open(srt_path, "w", encoding="utf-8") as f:
-        for i, seg in enumerate(segments, 1):
-            start = format_timestamp_srt(seg.start)
-            end = format_timestamp_srt(seg.end)
-            text = cc.convert(seg.text.strip()) if cc else seg.text.strip()
-            f.write(f"{i}\n{start} --> {end}\n{text}\n\n")
-            results.append((seg.start, seg.end, text))
-    print(f"✅ 已生成中文字幕: {srt_path}")
+        for seg in segments:
+            seg_start = _to_float(getattr(seg, "start", None), 0.0)
+            seg_end = _to_float(getattr(seg, "end", None), seg_start)
+            words = getattr(seg, "words", None) or []
+
+            if words:
+                buffer = ""
+                start_time = None
+
+                for w in words:
+                    w_word = getattr(w, "word", "") or ""
+                    text_piece = cc.convert(w_word.strip()) if cc else w_word.strip()
+                    if not text_piece:
+                        continue
+
+                    w_start = _to_float(getattr(w, "start", None), seg_start)
+                    w_end = _to_float(getattr(w, "end", None), w_start)
+
+                    if start_time is None:
+                        start_time = w_start
+
+                    buffer += text_piece
+
+                    duration = w_end - start_time
+                    ends_with_punct = bool(buffer and buffer[-1] in "。！？!?.,;:，、；")
+
+                    if len(buffer) >= MAX_CHARS or duration >= MAX_DURATION or ends_with_punct:
+                        end_time = w_end
+                        # 保证 end_time >= start_time
+                        if end_time < start_time:
+                            end_time = start_time + min(MAX_DURATION, max(0.1, seg_end - start_time))
+                        f.write(f"{idx}\n{format_timestamp_srt(start_time)} --> {format_timestamp_srt(end_time)}\n{buffer}\n\n")
+                        results.append((start_time, end_time, buffer))
+                        idx += 1
+                        buffer = ""
+                        start_time = None
+
+                # 残留 buffer（当前 segment 未 flush 的部分）
+                if buffer:
+                    end_time = seg_end if seg_end >= (start_time or seg_start) else (start_time or seg_start) + MAX_DURATION
+                    f.write(f"{idx}\n{format_timestamp_srt(start_time or seg_start)} --> {format_timestamp_srt(end_time)}\n{buffer}\n\n")
+                    results.append((start_time or seg_start, end_time, buffer))
+                    idx += 1
+
+            else:
+                # 没有词级时间戳的回退处理：按标点/长度分片，并将 segment 时间均匀分配到各片段
+                text = getattr(seg, "text", "").strip()
+                if not text:
+                    continue
+                parts = split_text_by_punct_and_len(text, MAX_CHARS)
+                seg_duration = max(seg_end - seg_start, 0.001)
+                per = seg_duration / max(len(parts), 1)
+                cur_start = seg_start
+                for part in parts:
+                    cur_end = cur_start + min(per, MAX_DURATION)
+                    f.write(f"{idx}\n{format_timestamp_srt(cur_start)} --> {format_timestamp_srt(cur_end)}\n{part}\n\n")
+                    results.append((cur_start, cur_end, part))
+                    idx += 1
+                    cur_start = cur_end
+
+    print(f"✅ 已生成优化后的中文字幕: {srt_path}")
     return results
+
 
 
 def generate_en_srt(cn_results, srt_path: str):
@@ -176,8 +262,8 @@ def generate_ass(cn_results, ass_path: str):
             start = format_timestamp_ass(start_sec)
             end = format_timestamp_ass(end_sec)
             text_en = translate(text_cn)
-            f.write(f"Dialogue: 0,{start},{end},CN,,0,0,200,,{{\\c&H00FF00&}}{text_cn}\n")
-            f.write(f"Dialogue: 0,{start},{end},EN,,0,0,150,,{{\\c&HFF0000&}}{text_en}\n")
+            f.write(f"Dialogue: 0,{start},{end},CN,,0,0,500,,{{\\c&H00FF00&}}{text_cn}\n")
+            f.write(f"Dialogue: 0,{start},{end},EN,,0,0,400,,{{\\c&HFF0000&}}{text_en}\n")
     print(f"✅ 已生成双语字幕: {ass_path}")
 
 
