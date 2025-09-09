@@ -7,11 +7,11 @@ make_subtitle.py - 自动为视频生成中英文字幕并烧录到视频中（�
 还需要本地安装 ffmpeg: https://ffmpeg.org/download.html
 
 用法:
-    python make_subtitle.py input.mp4 --mode all --burn
-    python make_subtitle.py input.mp4 --mode all
-    python make_subtitle.py input.mp4 --mode cn
-    python make_subtitle.py input.mp4 --mode en
-    python make_subtitle.py input.mp4 --mode ass
+    python make_bisubtitle.py .\raws\a.MOV --mode all --burn
+    python make_bisubtitle.py .\raws\a.MOV --mode all
+    python make_bisubtitle.py .\raws\a.MOV --mode cn
+    python make_bisubtitle.py .\raws\a.MOV --mode en
+    python make_bisubtitle.py .\raws\a.MOV --mode ass
 """
 
 import os
