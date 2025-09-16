@@ -11,7 +11,9 @@ os.makedirs(DATA_DIR, exist_ok=True)
 CORPUS = {
     # "AISHELL-1": "http://www.openslr.org/resources/33/data_aishell.tgz",
     # "faster-whisper-small":"https://huggingface.co/Systran/faster-whisper-small/tree/main"
-    "tacotron2-DDC-GST":"https://coqui.gateway.scarf.sh/v0.6.1_models/tts_models--zh-CN--baker--tacotron2-DDC-GST.zip"
+    # "tacotron2-DDC-GST":"https://coqui.gateway.scarf.sh/v0.6.1_models/tts_models--zh-CN--baker--tacotron2-DDC-GST.zip"
+    "a":"https://github.com/OpenTalker/SadTalker/releases/download/v0.0.2-rc/SadTalker_V0.0.2_256.safetensors",
+    "b":"https://github.com/OpenTalker/SadTalker/releases/download/v0.0.2-rc/SadTalker_V0.0.2_512.safetensors"
 }
 
 # 从环境变量读取代理
